@@ -1,0 +1,1647 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Zaheer-10/transformers/blob/main/Rag_with_Langchain\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "CY5RlEDOzPyx"
+      },
+      "source": [
+        "\n",
+        "<center> <h1>Building RAG Chatbots with LangChain </h1> </center>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "VPoeD6eDzXWD"
+      },
+      "source": [
+        "## Installation"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "m1wUT-6my_yK",
+        "outputId": "1e3689e2-b800-4968-d157-a28348f77a63"
+      },
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m1.7/1.7 MB\u001b[0m \u001b[31m9.4 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m76.5/76.5 kB\u001b[0m \u001b[31m9.8 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m469.0/469.0 kB\u001b[0m \u001b[31m12.8 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m179.4/179.4 kB\u001b[0m \u001b[31m15.2 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m2.0/2.0 MB\u001b[0m \u001b[31m18.1 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m110.5/110.5 kB\u001b[0m \u001b[31m13.5 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m194.1/194.1 kB\u001b[0m \u001b[31m18.2 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m134.8/134.8 kB\u001b[0m \u001b[31m15.4 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m294.9/294.9 kB\u001b[0m \u001b[31m22.8 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m62.5/62.5 kB\u001b[0m \u001b[31m7.5 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m300.4/300.4 kB\u001b[0m \u001b[31m18.9 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m49.4/49.4 kB\u001b[0m \u001b[31m5.9 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m134.3/134.3 kB\u001b[0m \u001b[31m17.0 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[?25h"
+          ]
+        }
+      ],
+      "source": [
+        "!pip install -qU \\\n",
+        "    langchain==0.0.292 \\\n",
+        "    openai==0.28.0 \\\n",
+        "    datasets==2.10.1 \\\n",
+        "    pinecone-client==2.2.4 \\\n",
+        "    tiktoken==0.5.1"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "rJM-4soMzgGx"
+      },
+      "source": [
+        "## Imports"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 3,
+      "metadata": {
+        "id": "frLflhZyziLu"
+      },
+      "outputs": [],
+      "source": [
+        "import os\n",
+        "from langchain.chat_models import ChatOpenAI\n",
+        "\n",
+        "os.environ[\"OPENAI_API_KEY\"] = os.getenv(\"OPENAI_API_KEY\") or \"\"\n",
+        "\n",
+        "chat = ChatOpenAI(\n",
+        "    openai_api_key=os.environ[\"OPENAI_API_KEY\"],\n",
+        "    model='gpt-3.5-turbo'\n",
+        ")"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Chats with OpenAI's gpt-3.5-turbo and gpt-4 chat models are typically structured (in plain text) like this:\n",
+        "\n",
+        "System: You are a helpful assistant.\n",
+        "\n",
+        "User: Hi AI, how are you today?\n",
+        "\n",
+        "Assistant: I'm great thank you. How can I help you?\n",
+        "\n",
+        "User: I'd like to understand string theory.\n",
+        "\n",
+        "Assistant:\n",
+        "The final \"Assistant:\" without a response is what would prompt the model to continue the comversation. In the official OpenAI ChatCompletion endpoint these would be passed to the model in a format like:\n",
+        "\n",
+        "[\n",
+        "    {\"role\": \"system\", \"content\": \"You are a helpful assistant.\"},\n",
+        "    {\"role\": \"user\", \"content\": \"Hi AI, how are you today?\"},\n",
+        "    {\"role\": \"assistant\", \"content\": \"I'm great thank you. How can I help you?\"}\n",
+        "    {\"role\": \"user\", \"content\": \"I'd like to understand string theory.\"}\n",
+        "]"
+      ],
+      "metadata": {
+        "id": "4Jcg_yK20LXJ"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# [\n",
+        "#     {\"role\": \"system\", \"content\": \"You are a helpful assistant.\"},\n",
+        "#     {\"role\": \"user\", \"content\": \"Hi AI, how are you today?\"},\n",
+        "#     {\"role\": \"assistant\", \"content\": \"I'm great thank you. How can I help you?\"}\n",
+        "#     {\"role\": \"user\", \"content\": \"I'd like to understand string theory.\"}\n",
+        "# ]"
+      ],
+      "metadata": {
+        "id": "QqPl8xXF0cfM"
+      },
+      "execution_count": 5,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# In LangChain there is a slightly different format. We use three message objects like so:\n",
+        "\n",
+        "\n",
+        "from langchain.schema import (\n",
+        "    SystemMessage,\n",
+        "    HumanMessage,\n",
+        "    AIMessage\n",
+        ")\n",
+        "\n",
+        "messages = [\n",
+        "    SystemMessage(content=\"You are a helpful assistant.\"),\n",
+        "    HumanMessage(content=\"Hi AI, how are you today?\"),\n",
+        "    AIMessage(content=\"I'm great thank you. How can I help you?\"),\n",
+        "    HumanMessage(content=\"I'd like to understand string theory.\")\n",
+        "]"
+      ],
+      "metadata": {
+        "id": "FNPi3o2k0PpO"
+      },
+      "execution_count": 6,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [],
+      "metadata": {
+        "id": "0FLHWhPx0n7b"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# We generate the next response from the AI by passing these messages to the ChatOpenAI object.\n",
+        "\n",
+        "res = chat(messages)\n",
+        "res\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "IjbEhwOT0oft",
+        "outputId": "a20efa16-889b-46bb-9f9f-f3667c9925c4"
+      },
+      "execution_count": 7,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "AIMessage(content=\"String theory is a theoretical framework in physics that aims to unify all fundamental forces and particles in the universe. It suggests that the fundamental building blocks of the universe are not point-like particles, but rather tiny, vibrating strings.\\n\\nHere are some key points to understand about string theory:\\n\\n1. Fundamental entities: In string theory, the basic constituents of the universe are not particles but tiny, one-dimensional strings. These strings can vibrate in different modes, giving rise to various particles and forces.\\n\\n2. Multidimensional spacetime: String theory requires extra dimensions beyond the familiar three spatial dimensions (length, width, and height) and one time dimension. These additional dimensions are compactified, meaning they are curled up and too small to be directly observed.\\n\\n3. Quantum mechanics: String theory incorporates quantum mechanics, which deals with the behavior of matter and energy at extremely small scales. Quantum mechanics allows particles to exist in multiple states simultaneously and introduces probabilities instead of certainties.\\n\\n4. Dualities and symmetries: String theory exhibits various dualities, which means that different descriptions of the theory may be mathematically equivalent. These dualities reveal hidden connections between seemingly different theories and provide new insights into the nature of spacetime.\\n\\n5. Unresolved challenges: Despite its promise, string theory is still a work in progress. Many aspects of the theory are yet to be fully understood, and it has not yet made testable predictions that can be experimentally verified.\\n\\nIt's important to note that string theory is a complex and mathematically intricate subject. It requires a solid background in physics and mathematics to fully grasp its intricacies. If you're interested in delving deeper, I recommend studying physics and taking courses specifically focused on string theory.\", additional_kwargs={}, example=False)"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 7
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# In response we get another AI message object. We can print it more clearly like so:\n",
+        "\n",
+        "print(res.content)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "hzNBX4xL3XIp",
+        "outputId": "c14ecbe9-4e20-42cb-da1a-2032f45e9a3f"
+      },
+      "execution_count": 8,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "String theory is a theoretical framework in physics that aims to unify all fundamental forces and particles in the universe. It suggests that the fundamental building blocks of the universe are not point-like particles, but rather tiny, vibrating strings.\n",
+            "\n",
+            "Here are some key points to understand about string theory:\n",
+            "\n",
+            "1. Fundamental entities: In string theory, the basic constituents of the universe are not particles but tiny, one-dimensional strings. These strings can vibrate in different modes, giving rise to various particles and forces.\n",
+            "\n",
+            "2. Multidimensional spacetime: String theory requires extra dimensions beyond the familiar three spatial dimensions (length, width, and height) and one time dimension. These additional dimensions are compactified, meaning they are curled up and too small to be directly observed.\n",
+            "\n",
+            "3. Quantum mechanics: String theory incorporates quantum mechanics, which deals with the behavior of matter and energy at extremely small scales. Quantum mechanics allows particles to exist in multiple states simultaneously and introduces probabilities instead of certainties.\n",
+            "\n",
+            "4. Dualities and symmetries: String theory exhibits various dualities, which means that different descriptions of the theory may be mathematically equivalent. These dualities reveal hidden connections between seemingly different theories and provide new insights into the nature of spacetime.\n",
+            "\n",
+            "5. Unresolved challenges: Despite its promise, string theory is still a work in progress. Many aspects of the theory are yet to be fully understood, and it has not yet made testable predictions that can be experimentally verified.\n",
+            "\n",
+            "It's important to note that string theory is a complex and mathematically intricate subject. It requires a solid background in physics and mathematics to fully grasp its intricacies. If you're interested in delving deeper, I recommend studying physics and taking courses specifically focused on string theory.\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# add latest AI response to messages\n",
+        "messages.append(res)\n",
+        "\n",
+        "# now create a new user prompt\n",
+        "prompt = HumanMessage(\n",
+        "    content=\"Why do physicists believe it can produce a 'unified theory'?\"\n",
+        ")\n",
+        "# add to messages\n",
+        "messages.append(prompt)\n",
+        "\n",
+        "# send to chat-gpt\n",
+        "res = chat(messages)\n",
+        "\n",
+        "print(res.content)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "E5CDqz6W3iWa",
+        "outputId": "9a16e080-9e12-42a3-e9eb-20f3f44efc1f"
+      },
+      "execution_count": 9,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Physicists believe that string theory has the potential to produce a unified theory because it provides a framework that can potentially describe all fundamental forces and particles in a single consistent framework. Here are a few reasons why physicists find string theory appealing as a candidate for a unified theory:\n",
+            "\n",
+            "1. Gravity and quantum mechanics: String theory naturally incorporates gravity within a quantum mechanical framework. Unlike other attempts to reconcile gravity and quantum mechanics, such as quantum field theory, string theory does not encounter the same mathematical difficulties when trying to describe the behavior of gravity at extremely small distances.\n",
+            "\n",
+            "2. Consistency: String theory provides a mathematically consistent framework. It resolves certain problems that arise in other theories, such as the infinities encountered in quantum field theory calculations. The consistency of string theory gives physicists confidence that it may be a viable candidate for a unified theory.\n",
+            "\n",
+            "3. Unification of forces: String theory has the potential to unify all fundamental forces, including gravity, electromagnetism, and the strong and weak nuclear forces. In string theory, particles and forces arise from the vibrational modes of the fundamental strings. This allows for the possibility of explaining the different forces by the different ways in which the strings can vibrate.\n",
+            "\n",
+            "4. Dualities: String theory exhibits various dualities, which reveal connections between seemingly different theories. These dualities suggest that different descriptions of the theory are mathematically equivalent, indicating a deeper underlying unity. The discovery of dualities has led to new insights and connections between different branches of physics.\n",
+            "\n",
+            "5. Explanation of particle properties: String theory provides a framework that can potentially explain the properties of elementary particles, such as their masses and charges. By studying the vibrational modes of the strings, physicists can derive the properties of the particles that arise from them.\n",
+            "\n",
+            "It's important to note that while string theory holds great promise, it has not yet been experimentally confirmed. The energy scales required to directly observe strings are currently beyond our technological capabilities. Nevertheless, physicists continue to study and explore string theory in the hope of uncovering its potential as a unified theory.\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "## Dealing with Hallucinations\n",
+        "\n",
+        "We have our chatbot, but as mentioned — the knowledge of LLMs can be limited. The reason for this is that LLMs learn all they know during training. An LLM essentially compresses the \"world\" as seen in the training data into the internal parameters of the model. We call this knowledge the parametric knowledge of the model.\n",
+        "\n",
+        "\n",
+        "\n",
+        "By default, LLMs have no access to the external world.\n",
+        "\n"
+      ],
+      "metadata": {
+        "id": "Wtb78uDY3syU"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# add latest AI response to messages\n",
+        "messages.append(res)\n",
+        "\n",
+        "# now create a new user prompt\n",
+        "prompt = HumanMessage(\n",
+        "    content=\"What is so best chase credit card?\"\n",
+        ")\n",
+        "# add to messages\n",
+        "messages.append(prompt)\n",
+        "\n",
+        "# send to OpenAI\n",
+        "res = chat(messages)"
+      ],
+      "metadata": {
+        "id": "CBNJeuD93x-w"
+      },
+      "execution_count": 10,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print(res.content)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Zg2eytGr36BD",
+        "outputId": "57209f12-263e-458f-eae3-854e22bab91f"
+      },
+      "execution_count": 11,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "The \"best\" Chase credit card depends on your specific needs and spending habits. Chase offers a wide range of credit cards with various features and benefits. Here are a few popular Chase credit cards and their key features:\n",
+            "\n",
+            "1. Chase Sapphire Preferred® Card: This card is popular among travelers. It offers a generous rewards program for travel and dining purchases, including bonus points for booking through the Chase Ultimate Rewards portal. It also provides travel protection benefits and allows points transfers to airline and hotel partners.\n",
+            "\n",
+            "2. Chase Freedom Unlimited®: This card is suitable for everyday spending. It offers unlimited 1.5% cash back on all purchases, with no annual fee. It also has a 0% introductory APR for balance transfers and purchases, making it a good option for those looking to consolidate debt or make large purchases.\n",
+            "\n",
+            "3. Chase Freedom Flex℠: This card provides rotating quarterly bonus categories, offering 5% cash back on up to $1,500 in combined purchases. It also offers 5% cash back on travel purchased through the Chase Ultimate Rewards portal, 3% cash back on dining and drugstore purchases, and 1% cash back on all other purchases.\n",
+            "\n",
+            "4. Chase Ink Business Preferred® Credit Card: This card is designed for business owners. It offers rewards in categories such as travel, shipping, advertising, and internet, cable, and phone services. It also provides cell phone protection, travel insurance, and points transfer options.\n",
+            "\n",
+            "These are just a few examples, and there are other Chase credit cards available with different features and benefits. To determine the best Chase credit card for you, consider your spending habits, financial goals, and the specific features that align with your needs. It's also a good idea to compare the rewards, fees, APRs, and other terms and conditions of each card before making a decision.\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "## Importing the Data\n"
+      ],
+      "metadata": {
+        "id": "OUlgfoZt4GT0"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import pandas as pd\n",
+        "\n",
+        "dataset = pd.read_csv(\"/content/cleaned_credit_card_data.csv\")\n",
+        "dataset.columns"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "JRO9nZsM4IxK",
+        "outputId": "b13eec5b-7725-4b92-f04e-1b688e8f295d"
+      },
+      "execution_count": 12,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "Index(['card_title', 'card_info', 'additional_benefits', 'source',\n",
+              "       'card_info_length', 'product_details'],\n",
+              "      dtype='object')"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 12
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "dataset.drop(['product_details' ,'card_info_length' ] , axis=1 , inplace=True)"
+      ],
+      "metadata": {
+        "id": "yWOqAtBY4TWe"
+      },
+      "execution_count": 13,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "dataset.columns"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "6WM2Mjb94b_f",
+        "outputId": "dbb303c5-a98e-40cf-bc0b-8fb49d0a277e"
+      },
+      "execution_count": 14,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "Index(['card_title', 'card_info', 'additional_benefits', 'source'], dtype='object')"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 14
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "dataset.to_csv(\"CREDIT_CARD_DATS.csv\")"
+      ],
+      "metadata": {
+        "id": "12wIBHsy4esO"
+      },
+      "execution_count": 15,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "dataset.head()"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 206
+        },
+        "id": "_G4Tbz3X4qKK",
+        "outputId": "f829f4a8-1250-45f3-999c-36001dcecb45"
+      },
+      "execution_count": 17,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "                                     card_title  \\\n",
+              "0                      Disney®Premier Visa®Card   \n",
+              "1                  DoorDash Rewards Mastercard®   \n",
+              "2                    Iberia Visa Signature®card   \n",
+              "3  IHG One Rewards Premier Business Credit Card   \n",
+              "4                 Ink Business Cash®Credit Card   \n",
+              "\n",
+              "                                           card_info  \\\n",
+              "0  $300Statement Creditafter you spend $1000 on p...   \n",
+              "1  Free DashPass ($96 Value) for a yearYour free ...   \n",
+              "2  Earn75,000Bonus AviosEarn 75,000 Avios after y...   \n",
+              "3  Earn 140,000 bonus pointsafter you spend $3,00...   \n",
+              "4  $750bonus cash backafter you spend $6,000 on p...   \n",
+              "\n",
+              "                                 additional_benefits  \\\n",
+              "0  Disney Rewards Dollars opens overlay, Disney V...   \n",
+              "1  Ways to redeem opens overlay, Contactless - Ju...   \n",
+              "2  Travel & purchase coverage opens overlay, Cont...   \n",
+              "3  Platinum Elite status opens overlay, Travel & ...   \n",
+              "4  Ways to redeem rewards opens overlay, Travel &...   \n",
+              "\n",
+              "                                              source  \n",
+              "0  https://creditcards.chase.com/rewards-credit-c...  \n",
+              "1  https://creditcards.chase.com/cash-back-credit...  \n",
+              "2  https://creditcards.chase.com/travel-credit-ca...  \n",
+              "3  https://creditcards.chase.com/business-credit-...  \n",
+              "4  https://creditcards.chase.com/business-credit-...  "
+            ],
+            "text/html": [
+              "\n",
+              "  <div id=\"df-cde198ca-998c-4203-beb2-6ed1ec1be5bb\" class=\"colab-df-container\">\n",
+              "    <div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>card_title</th>\n",
+              "      <th>card_info</th>\n",
+              "      <th>additional_benefits</th>\n",
+              "      <th>source</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>Disney®Premier Visa®Card</td>\n",
+              "      <td>$300Statement Creditafter you spend $1000 on p...</td>\n",
+              "      <td>Disney Rewards Dollars opens overlay, Disney V...</td>\n",
+              "      <td>https://creditcards.chase.com/rewards-credit-c...</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>1</th>\n",
+              "      <td>DoorDash Rewards Mastercard®</td>\n",
+              "      <td>Free DashPass ($96 Value) for a yearYour free ...</td>\n",
+              "      <td>Ways to redeem opens overlay, Contactless - Ju...</td>\n",
+              "      <td>https://creditcards.chase.com/cash-back-credit...</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>2</th>\n",
+              "      <td>Iberia Visa Signature®card</td>\n",
+              "      <td>Earn75,000Bonus AviosEarn 75,000 Avios after y...</td>\n",
+              "      <td>Travel &amp; purchase coverage opens overlay, Cont...</td>\n",
+              "      <td>https://creditcards.chase.com/travel-credit-ca...</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>3</th>\n",
+              "      <td>IHG One Rewards Premier Business Credit Card</td>\n",
+              "      <td>Earn 140,000 bonus pointsafter you spend $3,00...</td>\n",
+              "      <td>Platinum Elite status opens overlay, Travel &amp; ...</td>\n",
+              "      <td>https://creditcards.chase.com/business-credit-...</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>4</th>\n",
+              "      <td>Ink Business Cash®Credit Card</td>\n",
+              "      <td>$750bonus cash backafter you spend $6,000 on p...</td>\n",
+              "      <td>Ways to redeem rewards opens overlay, Travel &amp;...</td>\n",
+              "      <td>https://creditcards.chase.com/business-credit-...</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>\n",
+              "    <div class=\"colab-df-buttons\">\n",
+              "\n",
+              "  <div class=\"colab-df-container\">\n",
+              "    <button class=\"colab-df-convert\" onclick=\"convertToInteractive('df-cde198ca-998c-4203-beb2-6ed1ec1be5bb')\"\n",
+              "            title=\"Convert this dataframe to an interactive table.\"\n",
+              "            style=\"display:none;\">\n",
+              "\n",
+              "  <svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\">\n",
+              "    <path d=\"M120-120v-720h720v720H120Zm60-500h600v-160H180v160Zm220 220h160v-160H400v160Zm0 220h160v-160H400v160ZM180-400h160v-160H180v160Zm440 0h160v-160H620v160ZM180-180h160v-160H180v160Zm440 0h160v-160H620v160Z\"/>\n",
+              "  </svg>\n",
+              "    </button>\n",
+              "\n",
+              "  <style>\n",
+              "    .colab-df-container {\n",
+              "      display:flex;\n",
+              "      gap: 12px;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-convert {\n",
+              "      background-color: #E8F0FE;\n",
+              "      border: none;\n",
+              "      border-radius: 50%;\n",
+              "      cursor: pointer;\n",
+              "      display: none;\n",
+              "      fill: #1967D2;\n",
+              "      height: 32px;\n",
+              "      padding: 0 0 0 0;\n",
+              "      width: 32px;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-convert:hover {\n",
+              "      background-color: #E2EBFA;\n",
+              "      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);\n",
+              "      fill: #174EA6;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-buttons div {\n",
+              "      margin-bottom: 4px;\n",
+              "    }\n",
+              "\n",
+              "    [theme=dark] .colab-df-convert {\n",
+              "      background-color: #3B4455;\n",
+              "      fill: #D2E3FC;\n",
+              "    }\n",
+              "\n",
+              "    [theme=dark] .colab-df-convert:hover {\n",
+              "      background-color: #434B5C;\n",
+              "      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);\n",
+              "      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));\n",
+              "      fill: #FFFFFF;\n",
+              "    }\n",
+              "  </style>\n",
+              "\n",
+              "    <script>\n",
+              "      const buttonEl =\n",
+              "        document.querySelector('#df-cde198ca-998c-4203-beb2-6ed1ec1be5bb button.colab-df-convert');\n",
+              "      buttonEl.style.display =\n",
+              "        google.colab.kernel.accessAllowed ? 'block' : 'none';\n",
+              "\n",
+              "      async function convertToInteractive(key) {\n",
+              "        const element = document.querySelector('#df-cde198ca-998c-4203-beb2-6ed1ec1be5bb');\n",
+              "        const dataTable =\n",
+              "          await google.colab.kernel.invokeFunction('convertToInteractive',\n",
+              "                                                    [key], {});\n",
+              "        if (!dataTable) return;\n",
+              "\n",
+              "        const docLinkHtml = 'Like what you see? Visit the ' +\n",
+              "          '<a target=\"_blank\" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'\n",
+              "          + ' to learn more about interactive tables.';\n",
+              "        element.innerHTML = '';\n",
+              "        dataTable['output_type'] = 'display_data';\n",
+              "        await google.colab.output.renderOutput(dataTable, element);\n",
+              "        const docLink = document.createElement('div');\n",
+              "        docLink.innerHTML = docLinkHtml;\n",
+              "        element.appendChild(docLink);\n",
+              "      }\n",
+              "    </script>\n",
+              "  </div>\n",
+              "\n",
+              "\n",
+              "<div id=\"df-2cf31eaa-0521-426e-9729-e3ccbb4569c7\">\n",
+              "  <button class=\"colab-df-quickchart\" onclick=\"quickchart('df-2cf31eaa-0521-426e-9729-e3ccbb4569c7')\"\n",
+              "            title=\"Suggest charts.\"\n",
+              "            style=\"display:none;\">\n",
+              "\n",
+              "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\"viewBox=\"0 0 24 24\"\n",
+              "     width=\"24px\">\n",
+              "    <g>\n",
+              "        <path d=\"M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z\"/>\n",
+              "    </g>\n",
+              "</svg>\n",
+              "  </button>\n",
+              "\n",
+              "<style>\n",
+              "  .colab-df-quickchart {\n",
+              "      --bg-color: #E8F0FE;\n",
+              "      --fill-color: #1967D2;\n",
+              "      --hover-bg-color: #E2EBFA;\n",
+              "      --hover-fill-color: #174EA6;\n",
+              "      --disabled-fill-color: #AAA;\n",
+              "      --disabled-bg-color: #DDD;\n",
+              "  }\n",
+              "\n",
+              "  [theme=dark] .colab-df-quickchart {\n",
+              "      --bg-color: #3B4455;\n",
+              "      --fill-color: #D2E3FC;\n",
+              "      --hover-bg-color: #434B5C;\n",
+              "      --hover-fill-color: #FFFFFF;\n",
+              "      --disabled-bg-color: #3B4455;\n",
+              "      --disabled-fill-color: #666;\n",
+              "  }\n",
+              "\n",
+              "  .colab-df-quickchart {\n",
+              "    background-color: var(--bg-color);\n",
+              "    border: none;\n",
+              "    border-radius: 50%;\n",
+              "    cursor: pointer;\n",
+              "    display: none;\n",
+              "    fill: var(--fill-color);\n",
+              "    height: 32px;\n",
+              "    padding: 0;\n",
+              "    width: 32px;\n",
+              "  }\n",
+              "\n",
+              "  .colab-df-quickchart:hover {\n",
+              "    background-color: var(--hover-bg-color);\n",
+              "    box-shadow: 0 1px 2px rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);\n",
+              "    fill: var(--button-hover-fill-color);\n",
+              "  }\n",
+              "\n",
+              "  .colab-df-quickchart-complete:disabled,\n",
+              "  .colab-df-quickchart-complete:disabled:hover {\n",
+              "    background-color: var(--disabled-bg-color);\n",
+              "    fill: var(--disabled-fill-color);\n",
+              "    box-shadow: none;\n",
+              "  }\n",
+              "\n",
+              "  .colab-df-spinner {\n",
+              "    border: 2px solid var(--fill-color);\n",
+              "    border-color: transparent;\n",
+              "    border-bottom-color: var(--fill-color);\n",
+              "    animation:\n",
+              "      spin 1s steps(1) infinite;\n",
+              "  }\n",
+              "\n",
+              "  @keyframes spin {\n",
+              "    0% {\n",
+              "      border-color: transparent;\n",
+              "      border-bottom-color: var(--fill-color);\n",
+              "      border-left-color: var(--fill-color);\n",
+              "    }\n",
+              "    20% {\n",
+              "      border-color: transparent;\n",
+              "      border-left-color: var(--fill-color);\n",
+              "      border-top-color: var(--fill-color);\n",
+              "    }\n",
+              "    30% {\n",
+              "      border-color: transparent;\n",
+              "      border-left-color: var(--fill-color);\n",
+              "      border-top-color: var(--fill-color);\n",
+              "      border-right-color: var(--fill-color);\n",
+              "    }\n",
+              "    40% {\n",
+              "      border-color: transparent;\n",
+              "      border-right-color: var(--fill-color);\n",
+              "      border-top-color: var(--fill-color);\n",
+              "    }\n",
+              "    60% {\n",
+              "      border-color: transparent;\n",
+              "      border-right-color: var(--fill-color);\n",
+              "    }\n",
+              "    80% {\n",
+              "      border-color: transparent;\n",
+              "      border-right-color: var(--fill-color);\n",
+              "      border-bottom-color: var(--fill-color);\n",
+              "    }\n",
+              "    90% {\n",
+              "      border-color: transparent;\n",
+              "      border-bottom-color: var(--fill-color);\n",
+              "    }\n",
+              "  }\n",
+              "</style>\n",
+              "\n",
+              "  <script>\n",
+              "    async function quickchart(key) {\n",
+              "      const quickchartButtonEl =\n",
+              "        document.querySelector('#' + key + ' button');\n",
+              "      quickchartButtonEl.disabled = true;  // To prevent multiple clicks.\n",
+              "      quickchartButtonEl.classList.add('colab-df-spinner');\n",
+              "      try {\n",
+              "        const charts = await google.colab.kernel.invokeFunction(\n",
+              "            'suggestCharts', [key], {});\n",
+              "      } catch (error) {\n",
+              "        console.error('Error during call to suggestCharts:', error);\n",
+              "      }\n",
+              "      quickchartButtonEl.classList.remove('colab-df-spinner');\n",
+              "      quickchartButtonEl.classList.add('colab-df-quickchart-complete');\n",
+              "    }\n",
+              "    (() => {\n",
+              "      let quickchartButtonEl =\n",
+              "        document.querySelector('#df-2cf31eaa-0521-426e-9729-e3ccbb4569c7 button');\n",
+              "      quickchartButtonEl.style.display =\n",
+              "        google.colab.kernel.accessAllowed ? 'block' : 'none';\n",
+              "    })();\n",
+              "  </script>\n",
+              "</div>\n",
+              "    </div>\n",
+              "  </div>\n"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 17
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "##  Building the Knowledge Base"
+      ],
+      "metadata": {
+        "id": "vnA9bz-I5DPb"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import pinecone\n",
+        "from tqdm.autonotebook import tqdm\n",
+        "\n",
+        "# get API key from app.pinecone.io and environment from console\n",
+        "pinecone.init(\n",
+        "    api_key='',\n",
+        "    environment=os.environ.get('PINECONE_ENVIRONMENT') or 'gcp-starter'\n",
+        ")"
+      ],
+      "metadata": {
+        "id": "v0DrTDgR4vAj"
+      },
+      "execution_count": 30,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import time\n",
+        "\n",
+        "index_name = 'test2'\n",
+        "\n",
+        "if index_name not in pinecone.list_indexes():\n",
+        "    pinecone.create_index(\n",
+        "        index_name,\n",
+        "        dimension=1536,\n",
+        "        metric='cosine'\n",
+        "    )\n",
+        "    # wait for index to finish initialization\n",
+        "    while not pinecone.describe_index(index_name).status['ready']:\n",
+        "        time.sleep(1)\n",
+        "\n",
+        "index = pinecone.Index(index_name)"
+      ],
+      "metadata": {
+        "id": "cMjAHE8l5F2C"
+      },
+      "execution_count": 31,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "index.describe_index_stats()\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "OHUnfHD35ZIn",
+        "outputId": "7debf829-fadb-4463-a744-98c95d85a31d"
+      },
+      "execution_count": 23,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "{'dimension': 384,\n",
+              " 'index_fullness': 0.00037,\n",
+              " 'namespaces': {'': {'vector_count': 37}},\n",
+              " 'total_vector_count': 37}"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 23
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from langchain.embeddings.openai import OpenAIEmbeddings\n",
+        "\n",
+        "embed_model = OpenAIEmbeddings(model=\"text-embedding-ada-002\")"
+      ],
+      "metadata": {
+        "id": "dC92__FH6GgY"
+      },
+      "execution_count": 32,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "texts = [\n",
+        "    'this is the first chunk of text',\n",
+        "    'then another second chunk of text is here'\n",
+        "]\n",
+        "\n",
+        "res = embed_model.embed_documents(texts)\n",
+        "len(res), len(res[0])"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "6V2rUdCw6Irr",
+        "outputId": "0a01fcdb-a3bf-47f4-b4ae-5faa744b8f82"
+      },
+      "execution_count": 33,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "(2, 1536)"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 33
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "\n",
+        "dataset['index_column'] = range(len(dataset))\n",
+        "\n",
+        "# If you want to reset the index of the DataFrame and then create the new column\n",
+        "dataset.reset_index(drop=True, inplace=True)\n",
+        "dataset['index_column'] = range(len(dataset))\n",
+        "dataset['index_column'] = dataset['index_column'].astype(str)\n",
+        "\n",
+        "dataset.columns"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "IGqCSKS46LsC",
+        "outputId": "b2649fd0-4613-470d-a20c-fe420fa9812d"
+      },
+      "execution_count": 37,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "Index(['card_title', 'card_info', 'additional_benefits', 'source',\n",
+              "       'index_column'],\n",
+              "      dtype='object')"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 37
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from tqdm.auto import tqdm  # for progress bar\n",
+        "\n",
+        "\n",
+        "batch_size = 100\n",
+        "\n",
+        "for i in tqdm(range(0, len(dataset), batch_size)):\n",
+        "    i_end = min(len(dataset), i+batch_size)\n",
+        "    # get batch of data\n",
+        "    batch = dataset.iloc[i:i_end]\n",
+        "    # generate unique ids for each chunk\n",
+        "    ids = [x['index_column'] for i, x in batch.iterrows()]\n",
+        "    # get text to embed\n",
+        "    texts = [f\"{x['card_info']}-{x['additional_benefits']}\"for _, x in batch.iterrows()]\n",
+        "    # embed text\n",
+        "    embeds = embed_model.embed_documents(texts)\n",
+        "    # get metadata to store in Pinecone\n",
+        "    metadata = [\n",
+        "        {'text': x['card_info'],\n",
+        "         'source': x['source'],\n",
+        "         'title': x['card_title']} for i, x in batch.iterrows()\n",
+        "    ]\n",
+        "    # add to Pinecone\n",
+        "    index.upsert(vectors=zip(ids, embeds, metadata))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 49,
+          "referenced_widgets": [
+            "ca6b5b77ab9440bb96bf7eedd19b262b",
+            "a805e6d3f4274652997e38f497a942b9",
+            "2a55f53693d846cfaeba1e5860b876ce",
+            "b87382e8fb004533894846ecf1f044a2",
+            "16b52b6be2d74b5f808f1570f067c676",
+            "bca26d3eb22b4efb9478117e3bf71eee",
+            "eefa3ae37cf241bfbe81d830fa51fc46",
+            "70efc49c626d48bbbf231e9a688d5ade",
+            "1e79027fb34343889b9d9173edcd6c22",
+            "8916ffe3abdc446da90e307d5109b747",
+            "044df92116d64663b22482fab66aad10"
+          ]
+        },
+        "id": "lm4WfFej6Loa",
+        "outputId": "22269b87-2a90-461e-f88a-1a8922c4086f"
+      },
+      "execution_count": 41,
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/plain": [
+              "  0%|          | 0/1 [00:00<?, ?it/s]"
+            ],
+            "application/vnd.jupyter.widget-view+json": {
+              "version_major": 2,
+              "version_minor": 0,
+              "model_id": "ca6b5b77ab9440bb96bf7eedd19b262b"
+            }
+          },
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "metadata": {
+        "id": "2vIGg4MY8S5u"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "index.describe_index_stats()\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "9iGJUheI7PAU",
+        "outputId": "ddb615ed-3919-4ae1-829d-66f582e8427a"
+      },
+      "execution_count": 42,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "{'dimension': 1536,\n",
+              " 'index_fullness': 0.0,\n",
+              " 'namespaces': {},\n",
+              " 'total_vector_count': 0}"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 42
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "# Retrieval Augmented Generation\n"
+      ],
+      "metadata": {
+        "id": "XFnlUgKm7QxX"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "We've built a fully-fledged knowledge base. Now it's time to connect that knowledge base to our chatbot. To do that we'll be diving back into LangChain and reusing our template prompt from earlier.\n",
+        "\n",
+        "\n",
+        "To use LangChain here we need to load the LangChain abstraction for a vector index, called a vectorstore. We pass in our vector index to initialize the object."
+      ],
+      "metadata": {
+        "id": "q1bLER2W7TwQ"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from langchain.vectorstores import Pinecone\n",
+        "\n",
+        "text_field = \"text\"  # the metadata field that contains our text\n",
+        "\n",
+        "# initialize the vector store object\n",
+        "vectorstore = Pinecone(\n",
+        "    index, embed_model.embed_query, text_field\n",
+        ")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "A5Pns-YL7Wu3",
+        "outputId": "b2a820da-2b9b-4689-9003-14b04db61b78"
+      },
+      "execution_count": 43,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "/usr/local/lib/python3.10/dist-packages/langchain/vectorstores/pinecone.py:59: UserWarning: Passing in `embedding` as a Callable is deprecated. Please pass in an Embeddings object instead.\n",
+            "  warnings.warn(\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "query = \"What is cheapest chase credit card?\"\n",
+        "\n",
+        "vectorstore.similarity_search(query, k=3)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "RDS9Y_ul7cs_",
+        "outputId": "22d67997-5ec6-4840-9cbc-16e68046946e"
+      },
+      "execution_count": 44,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "[Document(page_content=\"Start off strong with a low intro APRMake moves toward your credit goals with 0% intro APR for 18 months on purchases and balance transfers. A variable APR of20.49Min. of (8.50+11.99) and 29.99%–29.24Min. of (8.50+20.74) and 29.99% on balance transfers and purchases after the introductory period ends. Balance transfer fee applies, see pricing and terms for more details.†Same page link to Pricing and TermsThis product is available to you if you do not have this card and have not received a new cardmember bonus for this card in the past 24 months., Pay over time with My Chase Plan®With My Chase Plan, you can break up card purchases intobudget-friendlypayments with no interest, just a fixed monthly fee.†Same page link to Pricing and TermsPlus, you'll pay no plan fees during your 0% APR introductory period.†Same page link to Pricing and TermsPlans created after that will have a monthly fee of no more than1.72%of each eligible purchase amount selected to create a plan. The fee will be determined at the time each plan iscreated – basedon the purchase amount, the number of months you choose to pay, and otherfactors – andwill remain the same until the plan balance is paid in full.†Same page link to Pricing and Terms, No Annual FeeYou won't have to pay an annual fee†Same page link to Pricing and Termsfor all the great features that come with your Slate EdgeSMcard., Lower your interest rate by 2% each yearYou will automatically be considered for an APR reduction by 2% when you pay on time and spend at least $1,000 on your card by your next account anniversary, until your APR reaches the Prime Rate plus 9.74% (currently18.24Min. of (8.50+9.74) and 29.99% variable APR based on the Prime Rate of8.50Min. of (8.50+0.00) and 29.99% as of08/01/2023(08/01/2023)).†Same page link to Pricing and Terms*Same page link to Offer DetailsYour final APR reduction could be less than 2% depending on the APR you receive with your card., Raise your credit limitSpecial welcome offer: Get an automatic review for a higher credit limit when you pay on time and spend $500 in your first six months.*Same page link to Offer Details, Keep tabs on your credit healthChase Credit Journey helps you monitor your credit with free access to your latest score, critical alerts*Same page link to Offer Details, and more.\", metadata={'source': 'https://creditcards.chase.com/balance-transfer-credit-cards/slate/edge?iCELL=61FY', 'title': 'Slate EdgeSMcredit card'}),\n",
+              " Document(page_content=\"Earn a $200 bonusEarn a $200 bonus after you spend $500 on purchases in the first 3 months from account opening.*Same page link to Offer DetailsThis product is available to you if you do not have this card and have not received a new cardmember bonus for this card in the past 24 months., Earn cash backEarn 5% on travel purchased through Chase Ultimate Rewards.*Same page link to Offer DetailsEarn 3% on dining at restaurants, including takeout and eligible delivery services.*Same page link to Offer DetailsEarn 3% on drugstore purchases.*Same page link to Offer DetailsEarn 1.5% on all other purchases.*Same page link to Offer Details, Low intro APR0% intro APR for 15 months from account opening on purchases and balance transfers.†Same page link to Pricing and TermsAfter the intro period, a variable APR of20.49Min. of (8.50+11.99) and 29.99%–29.24Min. of (8.50+20.74) and 29.99%.†Same page link to Pricing and TermsBalance transfer fee applies, see pricing and terms for more details.†Same page link to Pricing and Terms, No annual feeYou won't have to pay an annual fee†Same page link to Pricing and Termsfor all the great features that come with your Freedom Unlimited®card., Cash Back rewards do not expireCash Back rewards do not expire as long as your account is open.*Same page link to Offer DetailsAnd there is no minimum to redeem for cash back.\", metadata={'source': 'https://creditcards.chase.com/cash-back-credit-cards/freedom/unlimited?iCELL=61FY', 'title': 'Chase Freedom Unlimited®credit card'}),\n",
+              " Document(page_content=\"First Credit Card? Increase your approval chancesHaving a Chase checking account with a balance of at least $250 will increase your chances of getting approved for Chase Freedom RiseSM.*Same page link to Offer DetailsVisitchase.comOpens in a new windowor a branch location to open a Chase checking account. Once opened, you can then apply for Freedom RiseSM., Earn 1.5% Cash BackWith Chase Freedom RiseSM, you can start building credit while earning 1.5% cash back on all purchases.*Same page link to Offer DetailsCash Back rewards do not expire as long as your account is open.*Same page link to Offer DetailsAnd there is no minimum to redeem for cash back., $25 for enrolling in automatic paymentsEarn a $25 statement credit after signing up for automatic payments within the first three months of opening your account.*Same page link to Offer DetailsWith automatic payments, just pick a date and dollar amount to make sure your Credit Card gets paid on time., Credit Limit IncreaseAs a Chase cardmember, you'll be evaluated for a credit line increase in as soon as 6 months. Your credit line is the maximum amount of money you can spend on your Freedom RiseSMCard., Free Credit ScoreTrack your credit score and learn how to build it with Chase Credit Journey., No Annual FeeYou won't have to pay an annual fee†Same page link to Pricing and Termsfor all the great features that come with your Freedom RiseSMcard.\", metadata={'source': 'https://creditcards.chase.com/cash-back-credit-cards/freedom/rise?iCELL=61FY', 'title': 'Chase Freedom RiseSMCredit Card'})]"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 44
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# We return a lot of text here and it's not that clear what we need or what is relevant. Fortunately, our LLM will be able to parse this information much faster than us. All we need is to connect the output from our vectorstore to our chat chatbot. To do that we can use the same logic as we used earlier."
+      ],
+      "metadata": {
+        "id": "fyqCIFLl7jyC"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def augment_prompt(query: str):\n",
+        "    # get top 3 results from knowledge base\n",
+        "    results = vectorstore.similarity_search(query, k=3)\n",
+        "    # get the text from the results\n",
+        "    source_knowledge = \"\\n\".join([x.page_content for x in results])\n",
+        "    # feed into an augmented prompt\n",
+        "    augmented_prompt = f\"\"\"Using the contexts below, answer the query.\n",
+        "\n",
+        "    Contexts:\n",
+        "    {source_knowledge}\n",
+        "\n",
+        "    Query: {query}\"\"\"\n",
+        "    return augmented_prompt"
+      ],
+      "metadata": {
+        "id": "esd7TblX7l1r"
+      },
+      "execution_count": 45,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print(augment_prompt(query))\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "nVKm8LXz7uML",
+        "outputId": "6cea7bad-525e-442a-d6e7-0c7ee87cac93"
+      },
+      "execution_count": 46,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Using the contexts below, answer the query.\n",
+            "\n",
+            "    Contexts:\n",
+            "    Start off strong with a low intro APRMake moves toward your credit goals with 0% intro APR for 18 months on purchases and balance transfers. A variable APR of20.49Min. of (8.50+11.99) and 29.99%–29.24Min. of (8.50+20.74) and 29.99% on balance transfers and purchases after the introductory period ends. Balance transfer fee applies, see pricing and terms for more details.†Same page link to Pricing and TermsThis product is available to you if you do not have this card and have not received a new cardmember bonus for this card in the past 24 months., Pay over time with My Chase Plan®With My Chase Plan, you can break up card purchases intobudget-friendlypayments with no interest, just a fixed monthly fee.†Same page link to Pricing and TermsPlus, you'll pay no plan fees during your 0% APR introductory period.†Same page link to Pricing and TermsPlans created after that will have a monthly fee of no more than1.72%of each eligible purchase amount selected to create a plan. The fee will be determined at the time each plan iscreated – basedon the purchase amount, the number of months you choose to pay, and otherfactors – andwill remain the same until the plan balance is paid in full.†Same page link to Pricing and Terms, No Annual FeeYou won't have to pay an annual fee†Same page link to Pricing and Termsfor all the great features that come with your Slate EdgeSMcard., Lower your interest rate by 2% each yearYou will automatically be considered for an APR reduction by 2% when you pay on time and spend at least $1,000 on your card by your next account anniversary, until your APR reaches the Prime Rate plus 9.74% (currently18.24Min. of (8.50+9.74) and 29.99% variable APR based on the Prime Rate of8.50Min. of (8.50+0.00) and 29.99% as of08/01/2023(08/01/2023)).†Same page link to Pricing and Terms*Same page link to Offer DetailsYour final APR reduction could be less than 2% depending on the APR you receive with your card., Raise your credit limitSpecial welcome offer: Get an automatic review for a higher credit limit when you pay on time and spend $500 in your first six months.*Same page link to Offer Details, Keep tabs on your credit healthChase Credit Journey helps you monitor your credit with free access to your latest score, critical alerts*Same page link to Offer Details, and more.\n",
+            "Earn a $200 bonusEarn a $200 bonus after you spend $500 on purchases in the first 3 months from account opening.*Same page link to Offer DetailsThis product is available to you if you do not have this card and have not received a new cardmember bonus for this card in the past 24 months., Earn cash backEarn 5% on travel purchased through Chase Ultimate Rewards.*Same page link to Offer DetailsEarn 3% on dining at restaurants, including takeout and eligible delivery services.*Same page link to Offer DetailsEarn 3% on drugstore purchases.*Same page link to Offer DetailsEarn 1.5% on all other purchases.*Same page link to Offer Details, Low intro APR0% intro APR for 15 months from account opening on purchases and balance transfers.†Same page link to Pricing and TermsAfter the intro period, a variable APR of20.49Min. of (8.50+11.99) and 29.99%–29.24Min. of (8.50+20.74) and 29.99%.†Same page link to Pricing and TermsBalance transfer fee applies, see pricing and terms for more details.†Same page link to Pricing and Terms, No annual feeYou won't have to pay an annual fee†Same page link to Pricing and Termsfor all the great features that come with your Freedom Unlimited®card., Cash Back rewards do not expireCash Back rewards do not expire as long as your account is open.*Same page link to Offer DetailsAnd there is no minimum to redeem for cash back.\n",
+            "First Credit Card? Increase your approval chancesHaving a Chase checking account with a balance of at least $250 will increase your chances of getting approved for Chase Freedom RiseSM.*Same page link to Offer DetailsVisitchase.comOpens in a new windowor a branch location to open a Chase checking account. Once opened, you can then apply for Freedom RiseSM., Earn 1.5% Cash BackWith Chase Freedom RiseSM, you can start building credit while earning 1.5% cash back on all purchases.*Same page link to Offer DetailsCash Back rewards do not expire as long as your account is open.*Same page link to Offer DetailsAnd there is no minimum to redeem for cash back., $25 for enrolling in automatic paymentsEarn a $25 statement credit after signing up for automatic payments within the first three months of opening your account.*Same page link to Offer DetailsWith automatic payments, just pick a date and dollar amount to make sure your Credit Card gets paid on time., Credit Limit IncreaseAs a Chase cardmember, you'll be evaluated for a credit line increase in as soon as 6 months. Your credit line is the maximum amount of money you can spend on your Freedom RiseSMCard., Free Credit ScoreTrack your credit score and learn how to build it with Chase Credit Journey., No Annual FeeYou won't have to pay an annual fee†Same page link to Pricing and Termsfor all the great features that come with your Freedom RiseSMcard.\n",
+            "\n",
+            "    Query: What is cheapest chase credit card?\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# There is still a lot of text here, so let's pass it onto our chat model to see how it performs.\n",
+        "\n",
+        "# create a new user prompt\n",
+        "prompt = HumanMessage(\n",
+        "    content=augment_prompt(query)\n",
+        ")\n",
+        "# add to messages\n",
+        "messages.append(prompt)\n",
+        "\n",
+        "res = chat(messages)\n",
+        "\n",
+        "print(res.content)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "35TMmfac70gf",
+        "outputId": "384be195-d7bf-43d0-d44c-a84128c08f12"
+      },
+      "execution_count": 47,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Based on the given contexts, the cheapest Chase credit card would be the Chase Freedom Unlimited® card. It offers a low intro APR of 0% for 15 months on purchases and balance transfers, and it has no annual fee. Additionally, it provides cash back rewards, with 1.5% cash back on all purchases and no minimum to redeem for cash back.\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "##### Its answering but : However, it doesn't know anything about the safety measures themselves as we have not provided it with that information via the RAG pipeline. Let's try again but with RAG."
+      ],
+      "metadata": {
+        "id": "QljR_ywF7-Q5"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "prompt = HumanMessage(\n",
+        "    content=augment_prompt(\n",
+        "        \"what safety card for students?\"\n",
+        "    )\n",
+        ")\n",
+        "\n",
+        "res = chat(messages + [prompt])\n",
+        "print(res.content)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "6apw9fXE70eJ",
+        "outputId": "ee9be84d-f0e6-4c9e-ce8e-3cccf50ad0c0"
+      },
+      "execution_count": 48,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Based on the provided contexts, the Chase Freedom Unlimited® card would be a good option for students looking for a safe credit card. Here's why:\n",
+            "\n",
+            "1. No annual fee: The Chase Freedom Unlimited® card does not have an annual fee, making it a cost-effective choice for students.\n",
+            "\n",
+            "2. Cash back rewards: The card offers cash back rewards on purchases. Students can earn 1.5% cash back on all purchases, which can be a valuable way to save money while spending.\n",
+            "\n",
+            "3. Introductory APR: The card also offers a 0% introductory APR for 15 months on purchases and balance transfers. This can be helpful for students who may need to make larger purchases or transfer balances from other cards.\n",
+            "\n",
+            "4. Safety features: Chase provides robust security measures to protect cardholders against fraud and unauthorized transactions. They also offer fraud monitoring and zero liability protection, which means students won't be held responsible for unauthorized charges.\n",
+            "\n",
+            "It's important to note that responsible credit card usage is crucial for students. They should always pay their bills on time, keep their credit utilization low, and avoid carrying a balance whenever possible.\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "metadata": {
+        "id": "suIxP2tn70RU"
+      },
+      "execution_count": null,
+      "outputs": []
+    }
+  ],
+  "metadata": {
+    "accelerator": "GPU",
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyM3oSk50oh7lSJx8NSL+SGa",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "display_name": "Python 3",
+      "name": "python3"
+    },
+    "language_info": {
+      "name": "python"
+    },
+    "widgets": {
+      "application/vnd.jupyter.widget-state+json": {
+        "ca6b5b77ab9440bb96bf7eedd19b262b": {
+          "model_module": "@jupyter-widgets/controls",
+          "model_name": "HBoxModel",
+          "model_module_version": "1.5.0",
+          "state": {
+            "_dom_classes": [],
+            "_model_module": "@jupyter-widgets/controls",
+            "_model_module_version": "1.5.0",
+            "_model_name": "HBoxModel",
+            "_view_count": null,
+            "_view_module": "@jupyter-widgets/controls",
+            "_view_module_version": "1.5.0",
+            "_view_name": "HBoxView",
+            "box_style": "",
+            "children": [
+              "IPY_MODEL_a805e6d3f4274652997e38f497a942b9",
+              "IPY_MODEL_2a55f53693d846cfaeba1e5860b876ce",
+              "IPY_MODEL_b87382e8fb004533894846ecf1f044a2"
+            ],
+            "layout": "IPY_MODEL_16b52b6be2d74b5f808f1570f067c676"
+          }
+        },
+        "a805e6d3f4274652997e38f497a942b9": {
+          "model_module": "@jupyter-widgets/controls",
+          "model_name": "HTMLModel",
+          "model_module_version": "1.5.0",
+          "state": {
+            "_dom_classes": [],
+            "_model_module": "@jupyter-widgets/controls",
+            "_model_module_version": "1.5.0",
+            "_model_name": "HTMLModel",
+            "_view_count": null,
+            "_view_module": "@jupyter-widgets/controls",
+            "_view_module_version": "1.5.0",
+            "_view_name": "HTMLView",
+            "description": "",
+            "description_tooltip": null,
+            "layout": "IPY_MODEL_bca26d3eb22b4efb9478117e3bf71eee",
+            "placeholder": "​",
+            "style": "IPY_MODEL_eefa3ae37cf241bfbe81d830fa51fc46",
+            "value": "100%"
+          }
+        },
+        "2a55f53693d846cfaeba1e5860b876ce": {
+          "model_module": "@jupyter-widgets/controls",
+          "model_name": "FloatProgressModel",
+          "model_module_version": "1.5.0",
+          "state": {
+            "_dom_classes": [],
+            "_model_module": "@jupyter-widgets/controls",
+            "_model_module_version": "1.5.0",
+            "_model_name": "FloatProgressModel",
+            "_view_count": null,
+            "_view_module": "@jupyter-widgets/controls",
+            "_view_module_version": "1.5.0",
+            "_view_name": "ProgressView",
+            "bar_style": "success",
+            "description": "",
+            "description_tooltip": null,
+            "layout": "IPY_MODEL_70efc49c626d48bbbf231e9a688d5ade",
+            "max": 1,
+            "min": 0,
+            "orientation": "horizontal",
+            "style": "IPY_MODEL_1e79027fb34343889b9d9173edcd6c22",
+            "value": 1
+          }
+        },
+        "b87382e8fb004533894846ecf1f044a2": {
+          "model_module": "@jupyter-widgets/controls",
+          "model_name": "HTMLModel",
+          "model_module_version": "1.5.0",
+          "state": {
+            "_dom_classes": [],
+            "_model_module": "@jupyter-widgets/controls",
+            "_model_module_version": "1.5.0",
+            "_model_name": "HTMLModel",
+            "_view_count": null,
+            "_view_module": "@jupyter-widgets/controls",
+            "_view_module_version": "1.5.0",
+            "_view_name": "HTMLView",
+            "description": "",
+            "description_tooltip": null,
+            "layout": "IPY_MODEL_8916ffe3abdc446da90e307d5109b747",
+            "placeholder": "​",
+            "style": "IPY_MODEL_044df92116d64663b22482fab66aad10",
+            "value": " 1/1 [00:01&lt;00:00,  1.34s/it]"
+          }
+        },
+        "16b52b6be2d74b5f808f1570f067c676": {
+          "model_module": "@jupyter-widgets/base",
+          "model_name": "LayoutModel",
+          "model_module_version": "1.2.0",
+          "state": {
+            "_model_module": "@jupyter-widgets/base",
+            "_model_module_version": "1.2.0",
+            "_model_name": "LayoutModel",
+            "_view_count": null,
+            "_view_module": "@jupyter-widgets/base",
+            "_view_module_version": "1.2.0",
+            "_view_name": "LayoutView",
+            "align_content": null,
+            "align_items": null,
+            "align_self": null,
+            "border": null,
+            "bottom": null,
+            "display": null,
+            "flex": null,
+            "flex_flow": null,
+            "grid_area": null,
+            "grid_auto_columns": null,
+            "grid_auto_flow": null,
+            "grid_auto_rows": null,
+            "grid_column": null,
+            "grid_gap": null,
+            "grid_row": null,
+            "grid_template_areas": null,
+            "grid_template_columns": null,
+            "grid_template_rows": null,
+            "height": null,
+            "justify_content": null,
+            "justify_items": null,
+            "left": null,
+            "margin": null,
+            "max_height": null,
+            "max_width": null,
+            "min_height": null,
+            "min_width": null,
+            "object_fit": null,
+            "object_position": null,
+            "order": null,
+            "overflow": null,
+            "overflow_x": null,
+            "overflow_y": null,
+            "padding": null,
+            "right": null,
+            "top": null,
+            "visibility": null,
+            "width": null
+          }
+        },
+        "bca26d3eb22b4efb9478117e3bf71eee": {
+          "model_module": "@jupyter-widgets/base",
+          "model_name": "LayoutModel",
+          "model_module_version": "1.2.0",
+          "state": {
+            "_model_module": "@jupyter-widgets/base",
+            "_model_module_version": "1.2.0",
+            "_model_name": "LayoutModel",
+            "_view_count": null,
+            "_view_module": "@jupyter-widgets/base",
+            "_view_module_version": "1.2.0",
+            "_view_name": "LayoutView",
+            "align_content": null,
+            "align_items": null,
+            "align_self": null,
+            "border": null,
+            "bottom": null,
+            "display": null,
+            "flex": null,
+            "flex_flow": null,
+            "grid_area": null,
+            "grid_auto_columns": null,
+            "grid_auto_flow": null,
+            "grid_auto_rows": null,
+            "grid_column": null,
+            "grid_gap": null,
+            "grid_row": null,
+            "grid_template_areas": null,
+            "grid_template_columns": null,
+            "grid_template_rows": null,
+            "height": null,
+            "justify_content": null,
+            "justify_items": null,
+            "left": null,
+            "margin": null,
+            "max_height": null,
+            "max_width": null,
+            "min_height": null,
+            "min_width": null,
+            "object_fit": null,
+            "object_position": null,
+            "order": null,
+            "overflow": null,
+            "overflow_x": null,
+            "overflow_y": null,
+            "padding": null,
+            "right": null,
+            "top": null,
+            "visibility": null,
+            "width": null
+          }
+        },
+        "eefa3ae37cf241bfbe81d830fa51fc46": {
+          "model_module": "@jupyter-widgets/controls",
+          "model_name": "DescriptionStyleModel",
+          "model_module_version": "1.5.0",
+          "state": {
+            "_model_module": "@jupyter-widgets/controls",
+            "_model_module_version": "1.5.0",
+            "_model_name": "DescriptionStyleModel",
+            "_view_count": null,
+            "_view_module": "@jupyter-widgets/base",
+            "_view_module_version": "1.2.0",
+            "_view_name": "StyleView",
+            "description_width": ""
+          }
+        },
+        "70efc49c626d48bbbf231e9a688d5ade": {
+          "model_module": "@jupyter-widgets/base",
+          "model_name": "LayoutModel",
+          "model_module_version": "1.2.0",
+          "state": {
+            "_model_module": "@jupyter-widgets/base",
+            "_model_module_version": "1.2.0",
+            "_model_name": "LayoutModel",
+            "_view_count": null,
+            "_view_module": "@jupyter-widgets/base",
+            "_view_module_version": "1.2.0",
+            "_view_name": "LayoutView",
+            "align_content": null,
+            "align_items": null,
+            "align_self": null,
+            "border": null,
+            "bottom": null,
+            "display": null,
+            "flex": null,
+            "flex_flow": null,
+            "grid_area": null,
+            "grid_auto_columns": null,
+            "grid_auto_flow": null,
+            "grid_auto_rows": null,
+            "grid_column": null,
+            "grid_gap": null,
+            "grid_row": null,
+            "grid_template_areas": null,
+            "grid_template_columns": null,
+            "grid_template_rows": null,
+            "height": null,
+            "justify_content": null,
+            "justify_items": null,
+            "left": null,
+            "margin": null,
+            "max_height": null,
+            "max_width": null,
+            "min_height": null,
+            "min_width": null,
+            "object_fit": null,
+            "object_position": null,
+            "order": null,
+            "overflow": null,
+            "overflow_x": null,
+            "overflow_y": null,
+            "padding": null,
+            "right": null,
+            "top": null,
+            "visibility": null,
+            "width": null
+          }
+        },
+        "1e79027fb34343889b9d9173edcd6c22": {
+          "model_module": "@jupyter-widgets/controls",
+          "model_name": "ProgressStyleModel",
+          "model_module_version": "1.5.0",
+          "state": {
+            "_model_module": "@jupyter-widgets/controls",
+            "_model_module_version": "1.5.0",
+            "_model_name": "ProgressStyleModel",
+            "_view_count": null,
+            "_view_module": "@jupyter-widgets/base",
+            "_view_module_version": "1.2.0",
+            "_view_name": "StyleView",
+            "bar_color": null,
+            "description_width": ""
+          }
+        },
+        "8916ffe3abdc446da90e307d5109b747": {
+          "model_module": "@jupyter-widgets/base",
+          "model_name": "LayoutModel",
+          "model_module_version": "1.2.0",
+          "state": {
+            "_model_module": "@jupyter-widgets/base",
+            "_model_module_version": "1.2.0",
+            "_model_name": "LayoutModel",
+            "_view_count": null,
+            "_view_module": "@jupyter-widgets/base",
+            "_view_module_version": "1.2.0",
+            "_view_name": "LayoutView",
+            "align_content": null,
+            "align_items": null,
+            "align_self": null,
+            "border": null,
+            "bottom": null,
+            "display": null,
+            "flex": null,
+            "flex_flow": null,
+            "grid_area": null,
+            "grid_auto_columns": null,
+            "grid_auto_flow": null,
+            "grid_auto_rows": null,
+            "grid_column": null,
+            "grid_gap": null,
+            "grid_row": null,
+            "grid_template_areas": null,
+            "grid_template_columns": null,
+            "grid_template_rows": null,
+            "height": null,
+            "justify_content": null,
+            "justify_items": null,
+            "left": null,
+            "margin": null,
+            "max_height": null,
+            "max_width": null,
+            "min_height": null,
+            "min_width": null,
+            "object_fit": null,
+            "object_position": null,
+            "order": null,
+            "overflow": null,
+            "overflow_x": null,
+            "overflow_y": null,
+            "padding": null,
+            "right": null,
+            "top": null,
+            "visibility": null,
+            "width": null
+          }
+        },
+        "044df92116d64663b22482fab66aad10": {
+          "model_module": "@jupyter-widgets/controls",
+          "model_name": "DescriptionStyleModel",
+          "model_module_version": "1.5.0",
+          "state": {
+            "_model_module": "@jupyter-widgets/controls",
+            "_model_module_version": "1.5.0",
+            "_model_name": "DescriptionStyleModel",
+            "_view_count": null,
+            "_view_module": "@jupyter-widgets/base",
+            "_view_module_version": "1.2.0",
+            "_view_name": "StyleView",
+            "description_width": ""
+          }
+        }
+      }
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 0
+}
